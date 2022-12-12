@@ -12,12 +12,11 @@ function ExpandableItem({ item, onPress }) {
 			door: item.door == 0 ? 1 : 0,
 		})
 		.then(() => {
-			console.log('Update succeeded.');
+			alert("Door state updated successfully!");
 		})
 		.catch((error) => {
 			console.log('Update failed: ' + error.message);
-		}
-		);
+		});
 	}
 
     const onItemPress = () => {
