@@ -31,9 +31,3 @@ export const Button = styled.TouchableOpacity`
     shadow-radius: 3.84px;
     elevation: 5;
 `;
-
-
-export const ButtonLogout = styled.TouchableOpacity`
-    background-color: transparent;
-    padding: 10px;
-`;

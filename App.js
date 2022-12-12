@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useState, useEffect } from "react";
 import { firebase } from "./config";
+import TabBar from "./components/TabBar";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -41,7 +42,7 @@ function App() {
 
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Main" component={Main} />
+            <Stack.Screen name="Tab" component={TabBar} />
         </Stack.Navigator>
     );
 }
