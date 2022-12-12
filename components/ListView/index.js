@@ -1,78 +1,21 @@
 import React, { useRef } from "react";
-import { Container } from "./styles";
+import { Container, ButtonLogout } from "./styles";
 import { useState, useEffect } from "react";
 import { firebase } from "../../config";
 import { onValue, ref } from "firebase/database";
-import {
-    ScrollView,
-    View,
-    FlatList,
-    TextInput
-} from "react-native";
+import { ScrollView, View, FlatList, TextInput, Icon } from "react-native";
 import ExpandableItem from "./ExpandableItem";
 import { filter } from "lodash";
 import { Transition, Transitioning } from "react-native-reanimated";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 function ListView() {
     const [items, setItems] = useState([]);
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState("");
     const [fullData, setFullData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const transitionRef = useRef();
-    const transition = <Transition.Change interpolation='easeInOut' />
-
-    const handleSearch = text => {
-        const formattedQuery = text.toLowerCase();
-        const filteredData = filter(fullData, key => {
-            return contains(key, formattedQuery);
-        });
-        setItems(filteredData);
-        setQuery(text);
-    };
-
-    const contains = ({ key }, query) => {
-        if (key.includes(query)) {
-            return true;
-        }
-        return false;
-    };
-
-    const renderHeader = () => {
-        return (
-            <View
-                style={{
-                    backgroundColor: "#fff",
-                    padding: 10,
-                    marginVertical: 10,
-                    marginTop: 20,
-                    borderRadius: 20,
-                }}
-            >
-                <TextInput
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    clearButtonMode="always"
-                    value={query}
-                    onChangeText={(queryText) => handleSearch(queryText)}
-                    placeholder="Search"
-                    style={{ backgroundColor: "#fff", paddingHorizontal: 20 }}
-                />
-            </View>
-        );
-    };
-
-    const renderItem = ({ item }) => {
-        return (
-            <ExpandableItem
-                item={item}
-                onPress={
-                    () => {
-                        transitionRef.current.animateNextTransition()
-                    }
-                }
-            />
-        );
-    };
+    const transition = <Transition.Change interpolation="easeInOut" />;
 
     useEffect(() => {
         setIsLoading(true);
@@ -88,6 +31,83 @@ function ListView() {
         });
     }, []);
 
+    const handleSearch = (text) => {
+        const formattedQuery = text.toLowerCase();
+        const filteredData = filter(fullData, (key) => {
+            return contains(key, formattedQuery);
+        });
+        setItems(filteredData);
+        setQuery(text);
+    };
+
+    const contains = ({ key }, query) => {
+        if (key.includes(query)) {
+            return true;
+        }
+        return false;
+    };
+
+
+    const renderItems = ({ item }) => {
+        return (
+            <ExpandableItem
+                item={item}
+                onPress={() => {
+                    transitionRef.current.animateNextTransition();
+                }}
+            />
+        );
+    };
+
+    const renderHeader = () => {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                }}
+            >
+                <View
+                    style={{
+                        backgroundColor: "#fff",
+                        padding: 10,
+                        marginVertical: 10,
+                        marginTop: 20,
+                        borderRadius: 20,
+                        width: "85%",
+                    }}
+                >
+                    <TextInput
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        clearButtonMode="always"
+                        value={query}
+                        onChangeText={(queryText) => handleSearch(queryText)}
+                        placeholder="Search"
+                        style={{
+                            backgroundColor: "#fff",
+                            paddingHorizontal: 20,
+                        }}
+                    />
+                </View>
+                <View>
+                    <ButtonLogout
+                        title="Logout"
+                        onPress={() => firebase.auth().signOut()}
+                    >
+                        <Ionicons
+                            name="log-out-outline"
+                            size={24}
+                            color="black"
+                        />
+                    </ButtonLogout>
+                </View>
+            </View>
+        );
+    };
+
     return (
         <Container>
             <ScrollView
@@ -96,21 +116,23 @@ function ListView() {
                     minWidth: "80%",
                 }}
                 horizontal={true}
-                showsVerticalScrollIndicator ={false}
+                showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
             >
-                <Transitioning.View ref={transitionRef} transition={transition} style={{ flex: 1 }}>
+                <Transitioning.View
+                    ref={transitionRef}
+                    transition={transition}
+                    style={{ flex: 1 }}
+                >
                     <FlatList
-                        ListHeaderComponent={
-                            renderHeader()
-                        }
+                        ListHeaderComponent={renderHeader()}
                         data={items}
-                        renderItem={renderItem}
-                        keyExtractor={(item, index) => `${item.key}${index}`}
+                        renderItem={ renderItems }
+                        keyExtractor={(item) => item.key}
                         removeClippedSubviews={false}
-                        showsVerticalScrollIndicator ={false}
+                        showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
-                        style={{ flex: 1, paddingHorizontal: 5,}}
+                        style={{ flex: 1, paddingHorizontal: 5 }}
                     />
                 </Transitioning.View>
             </ScrollView>

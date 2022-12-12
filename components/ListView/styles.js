@@ -16,19 +16,7 @@ export const ListItem = styled.View`
     width: 100%;
 `;
 
-export const Button = styled.TouchableOpacity`
+export const ButtonLogout = styled.TouchableOpacity`
+    background-color: transparent;
     padding: 10px;
-    border-radius: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    align-items: center;
-    justify-content: center;
-    width: 140px;
-    height: 40px;
-    shadow-color: #000;
-    shadow-offset: 0 2px;
-    shadow-opacity: 0.15;
-    shadow-radius: 3.84px;
-    elevation: 5;
-
 `;
