@@ -20,8 +20,8 @@ function ExpandableItem({ item, onPress }) {
 		);
 	}
 
-    const onItemPress = () =>{
-        onPress()
+    const onItemPress = () => {
+		onPress();
         setExpanded(!expanded)
     }
 
@@ -60,11 +60,7 @@ function ExpandableItem({ item, onPress }) {
 				</View>
 				{expanded && (
 					<Button
-						onPress={
-							() => {
-								updateStateDoor();
-							}
-						}
+						onPress={updateStateDoor}
 						style={{
 							backgroundColor: item.door == 0 ? "#00b300" : "#ff0000",
 						}}

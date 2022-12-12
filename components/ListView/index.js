@@ -47,18 +47,6 @@ function ListView() {
         return false;
     };
 
-
-    const renderItems = ({ item }) => {
-        return (
-            <ExpandableItem
-                item={item}
-                onPress={() => {
-                    transitionRef.current.animateNextTransition();
-                }}
-            />
-        );
-    };
-
     const renderHeader = () => {
         return (
             <View
@@ -127,7 +115,14 @@ function ListView() {
                     <FlatList
                         ListHeaderComponent={renderHeader()}
                         data={items}
-                        renderItem={ renderItems }
+                        renderItem={ ({item}) => (
+                            <ExpandableItem
+                                item={item}
+                                onPress={() => {
+                                    transitionRef.current.animateNextTransition();
+                                }}
+                            />
+                            )}
                         keyExtractor={(item) => item.key}
                         removeClippedSubviews={false}
                         showsVerticalScrollIndicator={false}
