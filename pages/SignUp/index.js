@@ -8,7 +8,11 @@ function SignUp({ navigation }) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const registerUser = async(email, password) => {
+    const registerUser = async(email, password, confirmPassword) => {
+        if (password !== confirmPassword) {
+            alert("Passwords don't match")
+            return
+        }
             await firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(() => {
                 firebase.auth().currentUser.sendEmailVerification({
@@ -53,7 +57,13 @@ function SignUp({ navigation }) {
                     autoCapitalize="none"
                     autoCorrect={false}
                 />
-                <Input placeholder="Confirm Password" secureTextEntry />
+                <Input
+                    placeholder="Confirm Password"
+                    secureTextEntry
+                    onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                />
                 <Button
                     onPress={() => registerUser(email, password)}
                 >
