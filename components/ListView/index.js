@@ -1,23 +1,25 @@
-import React from "react";
-import { Container, ListItem } from "./styles";
+import React, { useRef } from "react";
+import { Container } from "./styles";
 import { useState, useEffect } from "react";
 import { firebase } from "../../config";
 import { onValue, ref } from "firebase/database";
 import {
     ScrollView,
-    Text,
-    TouchableOpacity,
     View,
     FlatList,
     TextInput
 } from "react-native";
+import ExpandableItem from "./ExpandableItem";
 import { filter } from "lodash";
+import { Transition, Transitioning } from "react-native-reanimated";
 
 function ListView() {
     const [items, setItems] = useState([]);
     const [query, setQuery] = useState('');
     const [fullData, setFullData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const transitionRef = useRef();
+    const transition = <Transition.Change interpolation='easeInOut' />
 
     const handleSearch = text => {
         const formattedQuery = text.toLowerCase();
@@ -42,6 +44,7 @@ function ListView() {
                     backgroundColor: "#fff",
                     padding: 10,
                     marginVertical: 10,
+                    marginTop: 20,
                     borderRadius: 20,
                 }}
             >
@@ -55,6 +58,19 @@ function ListView() {
                     style={{ backgroundColor: "#fff", paddingHorizontal: 20 }}
                 />
             </View>
+        );
+    };
+
+    const renderItem = ({ item }) => {
+        return (
+            <ExpandableItem
+                item={item}
+                onPress={
+                    () => {
+                        transitionRef.current.animateNextTransition()
+                    }
+                }
+            />
         );
     };
 
@@ -80,28 +96,23 @@ function ListView() {
                     minWidth: "80%",
                 }}
                 horizontal={true}
+                showsVerticalScrollIndicator ={false}
+                showsHorizontalScrollIndicator={false}
             >
-                <FlatList
-                    ListHeaderComponent={
-                        renderHeader()
-                    }
-                    data={items}
-                    renderItem={({ item }) => (
-                        <ListItem>
-                            <Text style={{ fontSize: 20, color: "#000" }}>
-                                {item.key}
-                            </Text>
-                        </ListItem>
-                        // <ExpandableList
-                        //     item={item}
-                        //     onClickFunction={() => {
-                        //         alert("Clicked on item with key: " + item.key);
-                        //     }}
-                        // />
-                    )}
-                    keyExtractor={(item) => item.key}
-                    removeClippedSubviews={false}
-                />
+                <Transitioning.View ref={transitionRef} transition={transition} style={{ flex: 1 }}>
+                    <FlatList
+                        ListHeaderComponent={
+                            renderHeader()
+                        }
+                        data={items}
+                        renderItem={renderItem}
+                        keyExtractor={(item, index) => `${item.key}${index}`}
+                        removeClippedSubviews={false}
+                        showsVerticalScrollIndicator ={false}
+                        showsHorizontalScrollIndicator={false}
+                        style={{ flex: 1, paddingHorizontal: 5,}}
+                    />
+                </Transitioning.View>
             </ScrollView>
         </Container>
     );
