@@ -31,31 +31,27 @@ function App() {
 
     if (!user) {
         return (
-                    <Stack.Navigator screenOptions={{ headerShown: false }}>
-                        <Stack.Screen name="Home" component={Home} />
-                        <Stack.Screen name="Login" component={Login} />
-                        <Stack.Screen name="SignUp" component={SignUp} />
-                    </Stack.Navigator>
-        );
-    }
-
-    return (
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Home" component={Home} />
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="SignUp" component={SignUp} />
-                <Stack.Screen name="Main" component={Main} />
             </Stack.Navigator>
+        );
+    }
+
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Main" component={Main} />
+        </Stack.Navigator>
     );
 }
 
 export default () => {
-	return (
-		<SafeAreaProvider>
-                <NavigationContainer>
-				<App />
-			</NavigationContainer>
-		</SafeAreaProvider>
-	);
-}
-
+    return (
+        <SafeAreaProvider>
+            <NavigationContainer>
+                <App />
+            </NavigationContainer>
+        </SafeAreaProvider>
+    );
+};
