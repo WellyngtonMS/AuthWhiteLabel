@@ -8,7 +8,7 @@ function SignUp({ navigation }) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const registerUser = async(email, password, confirmPassword) => {
+    const registerUser = async(email, password) => {
         if (password !== confirmPassword) {
             alert("Passwords don't match")
             return
