@@ -21,7 +21,7 @@ function SignUp({ navigation }) {
                 })
                 .then(() => {
                     alert("Check your email to verify your account")
-                    navigation.navigate("Home")
+                    navigation.navigate("Main")
                 }).catch((error) => {
                     alert(error.message)
                 })

@@ -80,7 +80,7 @@ const TabBar = () => {
                     ),
                 }}
             />
-            <Tab.Screen name="Button" component={AddDoor}
+            <Tab.Screen name="Button" component={ButtonLogout}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <TouchableOpacity
